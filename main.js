@@ -1,4 +1,3 @@
-// Array de tareas
 let tareas = [];
 
 // Función para agregar una tarea
@@ -11,33 +10,57 @@ function agregarTarea() {
             estado: "pendiente"
         };
         tareas.push(nuevaTarea);
+        guardarTareasEnJSON();
         mostrarTareas();
     } else {
         alert("El nombre de la tarea no puede estar vacío.");
     }
 }
 
+// Cargar tareas desde JSON al iniciar la aplicación
+function cargarTareasDesdeJSON() {
+    const tareasJSON = localStorage.getItem("tareas");
+    if (tareasJSON) {
+        tareas = JSON.parse(tareasJSON);
+        mostrarTareas();
+    }
+}
+
+// Guardar tareas en JSON en el localStorage
+function guardarTareasEnJSON() {
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+}
+
 // Función para mostrar las tareas en el HTML
 function mostrarTareas() {
     const taskList = document.getElementById("taskList");
-    taskList.innerHTML = "";
-    tareas.forEach(tarea => {
+    taskList.innerHTML = ""; // Limpiar la lista antes de mostrarla
+    tareas.forEach((tarea, index) => {
         const li = document.createElement("li");
         li.textContent = `${tarea.id}. ${tarea.nombre} - ${tarea.estado}`;
+
+        // Botón para completar tarea
+        const completarBtn = document.createElement("button");
+        completarBtn.textContent = "Completar";
+        completarBtn.onclick = () => {
+            tareas[index].estado = "completada";
+            guardarTareasEnJSON();
+            mostrarTareas();
+        };
+
+        // Botón para eliminar tarea
+        const eliminarBtn = document.createElement("button");
+        eliminarBtn.textContent = "Eliminar";
+        eliminarBtn.onclick = () => {
+            tareas.splice(index, 1);
+            guardarTareasEnJSON();
+            mostrarTareas();
+        };
+
+        li.appendChild(completarBtn);
+        li.appendChild(eliminarBtn);
         taskList.appendChild(li);
     });
-}
-
-// Función para marcar una tarea como completada
-function completarTarea() {
-    const nombre = prompt("Ingrese el nombre de la tarea a completar:").toUpperCase();
-    const tarea = tareas.find(t => t.nombre.toUpperCase() === nombre);
-    if (tarea) {
-        tarea.estado = "completada";
-        mostrarTareas();
-    } else {
-        alert("Tarea no encontrada.");
-    }
 }
 
 // Función para buscar una tarea
@@ -51,44 +74,8 @@ function buscarTarea() {
     }
 }
 
-// Función para eliminar una tarea
-function eliminarTarea() {
-    const nombre = prompt("Ingrese el nombre de la tarea a eliminar:").toUpperCase();
-    const index = tareas.findIndex(t => t.nombre.toUpperCase() === nombre);
-    if (index !== -1) {
-        tareas.splice(index, 1);
-        mostrarTareas();
-    } else {
-        alert("Tarea no encontrada.");
-    }
-}
+// Agregar evento al botón "Agregar Tarea"
+document.getElementById("addTaskButton").addEventListener("click", agregarTarea);
 
-// Opciones principales para el usuario
-function menu() {
-    let opcion;
-    do {
-        opcion = parseInt(prompt(`Seleccione una opción:\n1. Agregar tarea\n2. Completar tarea\n3. Buscar tarea\n4. Eliminar tarea\n5. Salir`), 10);
-        switch (opcion) {
-            case 1:
-                agregarTarea();
-                break;
-            case 2:
-                completarTarea();
-                break;
-            case 3:
-                buscarTarea();
-                break;
-            case 4:
-                eliminarTarea();
-                break;
-            case 5:
-                alert("Saliendo del gestor de tareas.");
-                break;
-            default:
-                alert("Opción no válida.");
-        }
-    } while (opcion !== 5);
-}
-
-// Ejecutar el menú al cargar
-menu();
+// Ejecutar al cargar la página
+cargarTareasDesdeJSON();
