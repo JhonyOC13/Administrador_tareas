@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Tareas</title>
+    <title>Administrador de Tareas</title>
 </head>
 <body>
-    <h1>Administración de Tareas</h1>
-    <button id="addTaskButton">Agregar tarea</button>
+    <h1>Administrador de tareas</h1>
+    <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Escribe una nueva tarea..." />
+        <button type="submit">Agregar Tarea</button>
+    </form>
+    <p id="errorMessage" style="color: red;"></p>
     <ul id="taskList"></ul>
     <script src="main.js"></script>
 </body>

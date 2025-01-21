@@ -1,22 +1,5 @@
 let tareas = [];
 
-// Función para agregar una tarea
-function agregarTarea() {
-    const nombre = prompt("Ingrese el nombre de la tarea:").toUpperCase();
-    if (nombre) {
-        const nuevaTarea = {
-            id: tareas.length + 1,
-            nombre: nombre,
-            estado: "pendiente"
-        };
-        tareas.push(nuevaTarea);
-        guardarTareasEnJSON();
-        mostrarTareas();
-    } else {
-        alert("El nombre de la tarea no puede estar vacío.");
-    }
-}
-
 // Cargar tareas desde JSON al iniciar la aplicación
 function cargarTareasDesdeJSON() {
     const tareasJSON = localStorage.getItem("tareas");
@@ -26,7 +9,7 @@ function cargarTareasDesdeJSON() {
     }
 }
 
-// Guardar tareas en JSON en el localStorage
+// Guardar tareas en JSON - localStorage
 function guardarTareasEnJSON() {
     localStorage.setItem("tareas", JSON.stringify(tareas));
 }
@@ -63,19 +46,34 @@ function mostrarTareas() {
     });
 }
 
-// Función para buscar una tarea
-function buscarTarea() {
-    const termino = prompt("Ingrese el término de búsqueda:").toUpperCase();
-    const resultados = tareas.filter(t => t.nombre.includes(termino));
-    if (resultados.length > 0) {
-        alert("Tareas encontradas:\n" + resultados.map(t => `${t.id}. ${t.nombre} - ${t.estado}`).join("\n"));
-    } else {
-        alert("No se encontraron tareas con ese término.");
+// Función para agregar una tarea
+function agregarTarea(nombre) {
+    if (nombre) {
+        const nuevaTarea = {
+            id: tareas.length + 1,
+            nombre: nombre.toUpperCase(),
+            estado: "pendiente"
+        };
+        tareas.push(nuevaTarea);
+        guardarTareasEnJSON();
+        mostrarTareas();
     }
 }
 
-// Agregar evento al botón "Agregar Tarea"
-document.getElementById("addTaskButton").addEventListener("click", agregarTarea);
+// Capturar eventos de entrada
+document.getElementById("taskForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const taskInput = document.getElementById("taskInput");
+    const nombreTarea = taskInput.value.trim();
+    if (nombreTarea) {
+        agregarTarea(nombreTarea);
+        taskInput.value = "";
+    } else {
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.textContent = "El nombre de la tarea no puede estar vacío.";
+        setTimeout(() => (errorMessage.textContent = ""), 3000);
+    }
+});
 
 // Ejecutar al cargar la página
 cargarTareasDesdeJSON();
