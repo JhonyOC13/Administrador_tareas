@@ -1,0 +1,6 @@
+[
+    { "id": 1, "nombre": "Comprar comida", "estado": "Pendiente" },
+    { "id": 2, "nombre": "Llamar a Brenda", "estado": "Pendiente" },
+    { "id": 3, "nombre": "Hacer ejercicio", "estado": "Pendiente" },
+    { "id": 4, "nombre": "Cocinar comida", "estado": "Pendiente" }
+]

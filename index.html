@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador de Tareas</title>
+    <title>Control de Tareas</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Administrador de tareas</h1>
+    <h1>Control de Tareas</h1>
+
     <form id="taskForm">
+        <button id="loadTasks">Cargar Tareas desde API</button>
         <input type="text" id="taskInput" placeholder="Escribe una nueva tarea..." />
         <button type="submit">Agregar Tarea</button>
     </form>
-    <p id="errorMessage" style="color: red;"></p>
-    <ul id="taskList"></ul>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tarea</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="taskList"></tbody>
+    </table>
+
     <script src="main.js"></script>
 </body>
 </html>
